@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RossBoiler.Application.WebAPI", "RossBoiler.Application.WebAPI\RossBoiler.Application.WebAPI.csproj", "{D798E101-DEB5-4E88-812F-6692D2A103D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RossBoiler.Application.Commands", "RossBoiler.Application.Commands\RossBoiler.Application.Commands.csproj", "{9BF989D4-90E6-4E07-8181-DE1FAAF67F4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RossBoiler.Application.Queries", "RossBoiler.Application.Queries\RossBoiler.Application.Queries.csproj", "{7FB93FA6-A4BB-4287-8F74-867CFF478F7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RossBoiler.Application.Models", "RossBoiler.Application.Models\RossBoiler.Application.Models.csproj", "{2DB226BF-5EBF-4DFF-ACD6-EF9C44C9D615}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RossBoiler.Application.Data", "RossBoiler.Application.Data\RossBoiler.Application.Data.csproj", "{808393DA-5BC1-446B-81B2-FBCDF4B5CB84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RossBoiler.Common", "RossBoiler.Common\RossBoiler.Common.csproj", "{75BACC4E-2C0F-4A5C-A80D-21F8C3DEB61C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D798E101-DEB5-4E88-812F-6692D2A103D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D798E101-DEB5-4E88-812F-6692D2A103D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D798E101-DEB5-4E88-812F-6692D2A103D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D798E101-DEB5-4E88-812F-6692D2A103D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BF989D4-90E6-4E07-8181-DE1FAAF67F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BF989D4-90E6-4E07-8181-DE1FAAF67F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BF989D4-90E6-4E07-8181-DE1FAAF67F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BF989D4-90E6-4E07-8181-DE1FAAF67F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB93FA6-A4BB-4287-8F74-867CFF478F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB93FA6-A4BB-4287-8F74-867CFF478F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB93FA6-A4BB-4287-8F74-867CFF478F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB93FA6-A4BB-4287-8F74-867CFF478F7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB226BF-5EBF-4DFF-ACD6-EF9C44C9D615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB226BF-5EBF-4DFF-ACD6-EF9C44C9D615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB226BF-5EBF-4DFF-ACD6-EF9C44C9D615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB226BF-5EBF-4DFF-ACD6-EF9C44C9D615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{808393DA-5BC1-446B-81B2-FBCDF4B5CB84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{808393DA-5BC1-446B-81B2-FBCDF4B5CB84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{808393DA-5BC1-446B-81B2-FBCDF4B5CB84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{808393DA-5BC1-446B-81B2-FBCDF4B5CB84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75BACC4E-2C0F-4A5C-A80D-21F8C3DEB61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75BACC4E-2C0F-4A5C-A80D-21F8C3DEB61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75BACC4E-2C0F-4A5C-A80D-21F8C3DEB61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75BACC4E-2C0F-4A5C-A80D-21F8C3DEB61C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27C5A111-4960-40AD-87A0-541785573D89}
+	EndGlobalSection
+EndGlobal

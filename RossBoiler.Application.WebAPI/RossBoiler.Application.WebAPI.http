@@ -1,0 +1,6 @@
+@RossBoiler.Application.WebAPI_HostAddress = http://localhost:5185
+
+GET {{RossBoiler.Application.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
