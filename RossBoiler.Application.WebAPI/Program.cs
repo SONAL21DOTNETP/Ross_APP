@@ -69,8 +69,11 @@ builder.Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
 });
 
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseInMemoryDatabase("ItemsDb"));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("ItemsDb"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -99,6 +102,26 @@ builder.Services.AddSwaggerGen(options =>
             },
             new string[] {}
         }
+    });
+});
+
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    // Policy for allowing all origins
+    //options.AddPolicy("AllowAll", policy =>
+    //{
+    //    policy.AllowAnyOrigin()
+    //          .AllowAnyMethod()
+    //          .AllowAnyHeader();
+    //});
+
+    // Policy for allowing specific IPs
+    options.AddPolicy("AllowSpecific", policy =>
+    {
+        policy.WithOrigins("http://192.168.1.2", "http://192.168.1.101") // Replace with your specific IPs
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.Load("RossBoiler.Application.Commands"), Assembly.Load("RossBoiler.Application.Queries")));
@@ -135,6 +158,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseCors();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
