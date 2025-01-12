@@ -16,7 +16,9 @@ namespace RossBoiler.Application.Queries
 
         public async Task<List<SubCategory>> Handle(GetAllSubCategoryQuery request, CancellationToken cancellationToken)
         {
-            return await _context.SubCategories.ToListAsync(cancellationToken);
+            //return await _context.SubCategories.ToListAsync(cancellationToken);
+            var subCategories = await _context.SubCategories.ToListAsync(cancellationToken);
+            return subCategories ?? new List<SubCategory>();
         }
     }
 }

@@ -20,17 +20,21 @@ namespace RossBoiler.Application.Commands
             var id = _correlationIdProvider.CorrelationId;
             //please write code to add this into log
             // Create the Item entity
-            var subcategory = new SubCategory
+         
+
+            // Create the SubCategory entity
+            var subCategory = new SubCategory
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                CategoryID = request.CategoryID 
             };
 
             // Add and save the entity
-            _context.SubCategories.Add(subcategory);
+            _context.SubCategories.Add(subCategory);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return subcategory.ID;
+            return subCategory.ID;
         }
     }
 

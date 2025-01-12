@@ -31,6 +31,11 @@ namespace RossBoiler.Application.Commands
             }
             // Update the item
             item.Name = request.Name;
+            if (!int.TryParse(request.CategoryID, out int parsedCategoryID))
+            {
+                return $"Invalid CategoryID: {request.CategoryID}";
+            }
+            item.CategoryID = parsedCategoryID;
             item.Description = request.Description;
 
             // Save changes

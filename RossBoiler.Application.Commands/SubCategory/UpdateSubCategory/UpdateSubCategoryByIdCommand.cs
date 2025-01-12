@@ -3,5 +3,5 @@ using MediatR;
 
 namespace RossBoiler.Application.Commands
 {
-    public record UpdateSubCategoryByIdCommand(int ID, string Name, string Description) : IRequest<string>;
+    public record UpdateSubCategoryByIdCommand(int ID, string Name, String CategoryID,string Description) : IRequest<string>;
 }
