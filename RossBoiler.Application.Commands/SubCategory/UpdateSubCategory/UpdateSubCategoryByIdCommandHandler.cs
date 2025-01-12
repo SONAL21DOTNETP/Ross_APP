@@ -20,8 +20,7 @@ namespace RossBoiler.Application.Commands
         {
             ////Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
-            ////please write code to add this into log
-            ///
+            
             // Find the item by ID
             var item = await _context.SubCategories.FirstOrDefaultAsync(i => i.ID == request.ID, cancellationToken);
             //if null 
@@ -31,11 +30,7 @@ namespace RossBoiler.Application.Commands
             }
             // Update the item
             item.Name = request.Name;
-            if (!int.TryParse(request.CategoryID, out int parsedCategoryID))
-            {
-                return $"Invalid CategoryID: {request.CategoryID}";
-            }
-            item.CategoryID = parsedCategoryID;
+            item.CategoryID = request.CategoryID;
             item.Description = request.Description;
 
             // Save changes
