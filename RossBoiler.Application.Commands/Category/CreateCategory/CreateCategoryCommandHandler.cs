@@ -5,30 +5,32 @@ using RossBoiler.Common;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateItemByIdCommandHandler : IRequestHandler<UpdateItemByIdCommand, string>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
-        public UpdateItemByIdCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
+        public CreateCategoryCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
             _context = context;
-            _correlationIdProvider = correlationIdProvider; 
+            _correlationIdProvider = correlationIdProvider;
         }
-        public async Task<string> Handle(UpdateItemByIdCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
             //please write code to add this into log
-            var product = new Item
+            // Create the Item entity
+            var category = new Category
             {
                 Name = request.Name,
-                Price = request.Price
+                Description = request.Description
             };
 
-            _context.Items.Add(product);
+            // Add and save the entity
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return "Hello world";
+            return category.ID;
         }
     }
 
