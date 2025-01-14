@@ -1,37 +1,37 @@
-﻿using MediatR;
+using MediatR;
 using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
+    public class CreateUnitCommandHandler : IRequestHandler<CreateUnitCommand, int>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
-        public CreateCategoryCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
+        public CreateUnitCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
             _context = context;
             _correlationIdProvider = correlationIdProvider;
         }
-        public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+
+        public async Task<int> Handle(CreateUnitCommand request, CancellationToken cancellationToken)
         {
             //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
-            //please write code to add this into log
-            // Create the Item entity
-            var  category = new Category
+
+            var unit = new Unit
             {
                 Name = request.Name,
+                Code = request.Code,
                 Description = request.Description
             };
 
-            // Add and save the entity
-            _context.Categories.Add(category);
+            _context.Units.Add(unit);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return category.ID;
+            return unit.UnitID;
         }
     }
-
 }
