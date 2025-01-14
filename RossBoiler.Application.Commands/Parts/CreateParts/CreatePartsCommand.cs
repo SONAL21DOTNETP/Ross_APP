@@ -1,0 +1,19 @@
+using System.Net;
+using MediatR;
+
+namespace RossBoiler.Application.Commands
+{
+    public record CreatePartsCommand(
+         int PartNumber,
+         string Name,
+         string? Description,
+         int UnitId,
+         decimal GSTPercentage,
+         int HSNDetailsId,
+         string SupplyType,
+         decimal SellingPrice,
+         decimal? Weight,
+         string? Dimensions,
+         int? PackingId,
+         string? MaterialOfConstruction) : IRequest<int>;
+}
