@@ -1,6 +1,6 @@
-public class CustomerMaster
+public class Customer
 {
     public int Id { get; set; }
-    public string FullDetails { get; set; }
-    public decimal CustomerPricing { get; set; }
+    public string OrgName { get; set; }
+    public required string Description { get; set; }
 }
