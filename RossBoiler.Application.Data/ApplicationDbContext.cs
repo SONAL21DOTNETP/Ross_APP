@@ -23,5 +23,9 @@ namespace RossBoiler.Application.Data
         public DbSet<Technician> Technicians { get; set; }
         public DbSet<UserManagement> UserManagements { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<ContactCentre> ContactCentres { get; set; }
+        public DbSet<CustomerBoiler> CustomerBoilers { get; set; }
+
     }
 }
