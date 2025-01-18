@@ -20,5 +20,8 @@ namespace RossBoiler.Application.Data
         public DbSet<CustomerPricing> CustomerPricings { get; set; }
         public DbSet<GST> GSTs { get; set; }
         public DbSet<Parts> Parts { get; set; }
+        public DbSet<Technician> Technicians { get; set; }
+        public DbSet<UserManagement> UserManagements { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }
