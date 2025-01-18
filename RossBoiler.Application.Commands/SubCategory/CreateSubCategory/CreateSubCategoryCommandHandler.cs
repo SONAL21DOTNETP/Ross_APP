@@ -27,7 +27,7 @@ namespace RossBoiler.Application.Commands
             {
                 Name = request.Name,
                 Description = request.Description,
-                CategoryID = request.CategoryID 
+                CategoryId = request.CategoryID 
             };
 
             // Add and save the entity

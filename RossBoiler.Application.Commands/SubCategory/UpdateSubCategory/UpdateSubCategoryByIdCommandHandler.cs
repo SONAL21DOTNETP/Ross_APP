@@ -30,7 +30,7 @@ namespace RossBoiler.Application.Commands
             }
             // Update the item
             item.Name = request.Name;
-            item.CategoryID = request.CategoryID;
+            item.CategoryId = request.CategoryID;
             item.Description = request.Description;
 
             // Save changes
