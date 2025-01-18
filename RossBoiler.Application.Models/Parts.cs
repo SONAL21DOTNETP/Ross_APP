@@ -5,7 +5,7 @@ public class Parts{
     public required string Name { get; set; }
     public string? Description { get; set; }
     public int UnitId { get; set; }
-    public decimal GSTPercentage { get; set; }
+    public int GSTId { get; set; }
     public int HSNDetailsId { get; set; }
     public required string SupplyType { get; set; }
     public decimal SellingPrice { get; set; }

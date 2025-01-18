@@ -8,7 +8,7 @@ namespace RossBoiler.Application.Commands
          string Name,
          string? Description,
          int UnitId,
-         decimal GSTPercentage,
+         int GSTId,
          int HSNDetailsId,
          string SupplyType,
          decimal SellingPrice,

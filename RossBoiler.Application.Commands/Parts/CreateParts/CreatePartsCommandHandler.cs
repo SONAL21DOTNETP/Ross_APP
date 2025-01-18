@@ -24,7 +24,7 @@ namespace RossBoiler.Application.Commands
                 Description = request.Description,
           
                 UnitId = request.UnitId,
-                GSTPercentage = request.GSTPercentage,
+                GSTId = request.GSTId,
                 HSNDetailsId = request.HSNDetailsId,
                 SupplyType = request.SupplyType,
                 SellingPrice = request.SellingPrice,

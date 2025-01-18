@@ -5,7 +5,7 @@ namespace RossBoiler.Application.Commands
     public record UpdateBoilerSeriesPartsMappingCommand(
         int Id,
         string Head,
-        string Series,
+        int SeriesId,
         string Description,
         string DisplayAllParts
     ) : IRequest<string>;

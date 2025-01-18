@@ -26,7 +26,7 @@ namespace RossBoiler.Application.Commands
             }
 
             partsMapping.Head = request.Head;
-            partsMapping.Series = request.Series;
+            partsMapping.SeriesId = request.SeriesId;
             partsMapping.Description = request.Description;
             partsMapping.DisplayAllParts = request.DisplayAllParts;
 

@@ -24,7 +24,7 @@ namespace RossBoiler.Application.Commands
             var boilerSeriesPartsMapping = new BoilerSeriesPartsMapping
             {
                 Head = request.Head,
-                Series = request.Series,
+                SeriesId = request.SeriesId,
                 Description = request.Description,
                 DisplayAllParts = request.DisplayAllParts
             };
