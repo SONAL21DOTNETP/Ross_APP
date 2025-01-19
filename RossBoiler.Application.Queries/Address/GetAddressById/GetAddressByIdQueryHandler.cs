@@ -16,7 +16,9 @@ namespace RossBoiler.Application.Queries
 
         public async Task<Address> Handle(GetAddressByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Addresses.FindAsync(new object[] { request.Id }, cancellationToken);
+            //return await _context.Addresses.FindAsync(new object[] { request.Id }, cancellationToken);
+            return await _context.Addresses.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
         }
     }
 }

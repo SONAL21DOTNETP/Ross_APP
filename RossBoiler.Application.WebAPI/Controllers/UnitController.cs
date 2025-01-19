@@ -6,7 +6,7 @@ using RossBoiler.Application.Queries;
 using RossBoiler.Application.WebAPI.Utils;
 using RossBoiler.Common;
 
-namespace YourApp.Application.WebAPI
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
     [Route("api/v{version}/[controller]")]

@@ -1,15 +1,17 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RossBoiler.Application.Commands;
-using RossBoiler.Application.Models;
 using RossBoiler.Application.Queries;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using RossBoiler.Application.WebAPI.Utils;
+using RossBoiler.Common;
 
-namespace RossBoiler.API.Controllers
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly IMediator _mediator;

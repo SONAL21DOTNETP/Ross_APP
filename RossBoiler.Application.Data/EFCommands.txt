@@ -1,3 +1,3 @@
-﻿dotnet ef migrations add InitialCreate
+﻿dotnet ef migrations add AddForignKeyInAddress
 ---ef migrations remove
 dotnet ef database update

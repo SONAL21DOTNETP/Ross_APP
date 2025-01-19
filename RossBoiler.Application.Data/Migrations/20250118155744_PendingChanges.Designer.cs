@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RossBoiler.Application.Data;
 
@@ -11,9 +12,11 @@ using RossBoiler.Application.Data;
 namespace RossBoiler.Application.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118155744_PendingChanges")]
+    partial class PendingChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,6 @@ namespace RossBoiler.Application.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Addresses");
                 });
@@ -538,17 +539,6 @@ namespace RossBoiler.Application.Data.Migrations
                     b.ToTable("UserManagements");
                 });
 
-            modelBuilder.Entity("Address", b =>
-                {
-                    b.HasOne("Customer", "Customer")
-                        .WithMany("Addresses")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("RossBoiler.Application.Models.SubCategory", b =>
                 {
                     b.HasOne("RossBoiler.Application.Models.Category", "Category")
@@ -558,11 +548,6 @@ namespace RossBoiler.Application.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Customer", b =>
-                {
-                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("RossBoiler.Application.Models.Category", b =>

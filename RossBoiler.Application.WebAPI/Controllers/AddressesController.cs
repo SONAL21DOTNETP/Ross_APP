@@ -8,12 +8,11 @@ using RossBoiler.Common;
 
 namespace RossBoiler.Application.WebAPI
 {
-    
-     [ApiController]
-     [Route("api/v{version}/[controller]")]
-     [ApiVersion("1.0")]
-     [Authorize]
-     public class AddressesController : ControllerBase{
+    [ApiController]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
+    public class AddressesController : ControllerBase{
         private readonly IMediator _mediator;
         private readonly ICorrelationIdProvider _correlationIdProvider;
 
