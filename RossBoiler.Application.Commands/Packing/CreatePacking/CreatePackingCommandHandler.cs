@@ -25,13 +25,15 @@ namespace RossBoiler.Application.Commands
             {
                 Name = request.Name,
                 UsedFor = request.UsedFor,
-                Description = request.Description
+                Description = request.Description,
+                Parts = new List<Parts>()
             };
 
             _context.Packings.Add(packing);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return packing.PackingID;
+            return packing.ID;
         }
     }
+
 }

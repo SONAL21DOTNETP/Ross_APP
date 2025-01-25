@@ -16,7 +16,7 @@ namespace RossBoiler.Application.Queries
 
         public async Task<GST> Handle(GetGSTByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.GSTs.FirstOrDefaultAsync(g => g.Id == request.Id, cancellationToken);
+            return await _context.GSTs.FirstOrDefaultAsync(g => g.ID == request.Id, cancellationToken);
         }
     }
 }

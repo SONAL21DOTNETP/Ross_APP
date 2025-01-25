@@ -15,41 +15,53 @@ namespace RossBoiler.Application.WebAPI
     public class PartsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public PartsController(IMediator mediator)
+        public PartsController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
         [HttpPost]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreatePart([FromBody] CreatePartsCommand command)
         {
-            var id = await _mediator.Send(command);
-            return Ok(new { Id = id });
+            
+            var id = _correlationIdProvider.CorrelationId;
+            var partsId = await _mediator.Send(command);
+            return Ok(new { Id = partsId });
         }
 
-        [HttpPut]
+        [HttpPost("UpdatePart")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> UpdatePart([FromBody] UpdatePartsCommand command)
         {
+            var id = _correlationIdProvider.CorrelationId;
             var message = await _mediator.Send(command);
             return Ok(new { Message = message });
         }
 
-        [HttpDelete("{id}")]
+
+        [HttpDelete("DeletePart")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> DeletePart(int id)
         {
+            
+            var correlationId = _correlationIdProvider.CorrelationId;
             var message = await _mediator.Send(new DeletePartsCommand(id));
             return Ok(new { Message = message });
         }
 
         [HttpGet]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllParts()
         {
             var parts = await _mediator.Send(new GetAllPartsQuery());
             return Ok(parts);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetPartById")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetPartById(int id)
         {
             var part = await _mediator.Send(new GetPartsByFilterQuery(id));

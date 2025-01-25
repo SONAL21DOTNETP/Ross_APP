@@ -31,7 +31,7 @@ namespace RossBoiler.Application.Commands
             _context.Units.Add(unit);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return unit.UnitID;
+            return unit.ID;
         }
     }
 }

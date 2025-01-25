@@ -34,7 +34,7 @@ namespace RossBoiler.Application.Commands
             part.SellingPrice = request.SellingPrice;
             part.Weight = request.Weight;
             part.Dimensions = request.Dimensions;
-            part.PackingId = request.PackingId;
+            part.PackingId = request.Id;
             part.MaterialOfConstruction = request.MaterialOfConstruction;
 
             await _context.SaveChangesAsync(cancellationToken);

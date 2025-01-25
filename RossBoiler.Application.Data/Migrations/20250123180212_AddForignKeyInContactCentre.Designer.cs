@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RossBoiler.Application.Data;
 
@@ -11,9 +12,11 @@ using RossBoiler.Application.Data;
 namespace RossBoiler.Application.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250123180212_AddForignKeyInContactCentre")]
+    partial class AddForignKeyInContactCentre
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,8 +233,6 @@ namespace RossBoiler.Application.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("CustomerBoilers");
                 });
 
@@ -260,11 +261,11 @@ namespace RossBoiler.Application.Data.Migrations
 
             modelBuilder.Entity("GST", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -273,18 +274,18 @@ namespace RossBoiler.Application.Data.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("GSTs");
                 });
 
             modelBuilder.Entity("HSN", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("HsnID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HsnID"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -294,18 +295,18 @@ namespace RossBoiler.Application.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("HsnID");
 
                     b.ToTable("HSNs");
                 });
 
             modelBuilder.Entity("Packing", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("PackingID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PackingID"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -319,7 +320,7 @@ namespace RossBoiler.Application.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("PackingID");
 
                     b.ToTable("Packings");
                 });
@@ -357,7 +358,7 @@ namespace RossBoiler.Application.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PackingId")
+                    b.Property<int?>("PackingId")
                         .HasColumnType("int");
 
                     b.Property<int>("PartNumber")
@@ -377,14 +378,6 @@ namespace RossBoiler.Application.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GSTId");
-
-                    b.HasIndex("HSNDetailsId");
-
-                    b.HasIndex("PackingId");
-
-                    b.HasIndex("UnitId");
 
                     b.ToTable("Parts");
                 });
@@ -514,11 +507,11 @@ namespace RossBoiler.Application.Data.Migrations
 
             modelBuilder.Entity("Unit", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("UnitID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UnitID"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -532,7 +525,7 @@ namespace RossBoiler.Application.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("UnitID");
 
                     b.ToTable("Units");
                 });
@@ -570,59 +563,11 @@ namespace RossBoiler.Application.Data.Migrations
 
             modelBuilder.Entity("ContactCentre", b =>
                 {
-                    b.HasOne("Customer", "Customer")
+                    b.HasOne("Customer", null)
                         .WithMany("ContactCentres")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("CustomerBoiler", b =>
-                {
-                    b.HasOne("Customer", "Customer")
-                        .WithMany("CustomerBoilers")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Parts", b =>
-                {
-                    b.HasOne("GST", "GST")
-                        .WithMany("Parts")
-                        .HasForeignKey("GSTId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HSN", "HSN")
-                        .WithMany("Parts")
-                        .HasForeignKey("HSNDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Packing", "Packing")
-                        .WithMany("Parts")
-                        .HasForeignKey("PackingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Unit", "Unit")
-                        .WithMany("Parts")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GST");
-
-                    b.Navigation("HSN");
-
-                    b.Navigation("Packing");
-
-                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("RossBoiler.Application.Models.SubCategory", b =>
@@ -641,33 +586,11 @@ namespace RossBoiler.Application.Data.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("ContactCentres");
-
-                    b.Navigation("CustomerBoilers");
-                });
-
-            modelBuilder.Entity("GST", b =>
-                {
-                    b.Navigation("Parts");
-                });
-
-            modelBuilder.Entity("HSN", b =>
-                {
-                    b.Navigation("Parts");
-                });
-
-            modelBuilder.Entity("Packing", b =>
-                {
-                    b.Navigation("Parts");
                 });
 
             modelBuilder.Entity("RossBoiler.Application.Models.Category", b =>
                 {
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("Unit", b =>
-                {
-                    b.Navigation("Parts");
                 });
 #pragma warning restore 612, 618
         }

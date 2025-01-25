@@ -15,76 +15,58 @@ namespace RossBoiler.Application.WebAPI
     public class UserManagementController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public UserManagementController(IMediator mediator)
+        public UserManagementController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
-        // Get All UserManagements
-        [HttpGet]
-        public async Task<ActionResult<List<UserManagement>>> GetAll()
-        {
-            var result = await _mediator.Send(new GetAllUserManagementsQuery());
-            return Ok(result);
-        }
-
-        // Get UserManagement by ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserManagement>> GetById(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetUserManagementByIdQuery(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        // Create a new UserManagement
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] CreateUserManagementCommand command)
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> CreateUserManagement([FromBody] CreateUserManagementCommand command)
         {
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = result }, result);
+            //Access  correlationId
+            var id = _correlationIdProvider.CorrelationId;
+            var UserManagementID = await _mediator.Send(command);
+            return Ok(new { Id = UserManagementID });
         }
 
-        // Update UserManagement
-        [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Update(int id, [FromBody] UpdateUserManagementCommand command)
-        {
-            if (id != command.UserManagementID)
-            {
-                return BadRequest("ID mismatch between route and body.");
-            }
 
-            try
-            {
-                var result = await _mediator.Send(command);
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+        [HttpPost("UpdateUserManagement")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> UpdateUserManagement([FromBody] UpdateUserManagementCommand command)
+        {
+            //Access  correlationId
+            var id = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(command);
+            return Ok(new { Message = message });
         }
 
-        // Delete UserManagement
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
+        [HttpDelete("DeleteUserManagement")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> DeleteUserManagement([FromQuery] int id)
         {
-            try
-            {
-                var result = await _mediator.Send(new DeleteUserManagementCommand(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteUserManagementCommand(id));
+            return Ok(new { Message = message });
+        }
+
+        [HttpGet]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> GetAllUserManagements()
+        {
+            var Items = await _mediator.Send(new GetAllUserManagementsQuery());
+            return Ok(Items);
+        }
+
+
+        [HttpGet("GetUserManagementById")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> GetUserManagementById([FromQuery] int id)
+        {
+            var Item = await _mediator.Send(new GetUserManagementByIdQuery(id));
+            return Ok(Item);
         }
     }
 }

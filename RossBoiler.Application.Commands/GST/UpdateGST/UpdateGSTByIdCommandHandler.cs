@@ -21,7 +21,7 @@ namespace RossBoiler.Application.Commands
         {
             var correlationId = _correlationIdProvider.CorrelationId;
 
-            var gst = await _context.GSTs.FirstOrDefaultAsync(g => g.Id == request.Id, cancellationToken);
+            var gst = await _context.GSTs.FirstOrDefaultAsync(g => g.ID == request.Id, cancellationToken);
             if (gst == null)
             {
                 return $"GST with ID {request.Id} not found.";
