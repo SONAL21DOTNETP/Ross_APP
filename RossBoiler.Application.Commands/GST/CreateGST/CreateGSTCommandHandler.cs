@@ -23,13 +23,14 @@ namespace RossBoiler.Application.Commands
             var gst = new GST
             {
                 Rate = request.Rate,
-                Description = request.Description
+                Description = request.Description,
+                Parts = new List<Parts>()
             };
 
             _context.GSTs.Add(gst);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return gst.Id;
+            return gst.ID;
         }
     }
 }

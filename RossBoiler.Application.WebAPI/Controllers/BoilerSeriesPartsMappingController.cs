@@ -6,38 +6,48 @@ using RossBoiler.Application.Queries;
 using RossBoiler.Application.WebAPI.Utils;
 using RossBoiler.Common;
 
-namespace YourApp.Application.WebAPI
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class BoilerSeriesPartsMappingController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public BoilerSeriesPartsMappingController(IMediator mediator)
+        public BoilerSeriesPartsMappingController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
         [HttpPost]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateBoilerSeriesPartsMapping(CreateBoilerSeriesPartsMappingCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var id = _correlationIdProvider.CorrelationId;
+            var BoilerSeriesPartsMappingId = await _mediator.Send(command);
+            return Ok(new { Id = BoilerSeriesPartsMappingId });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteBoilerSeriesPartsMapping")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> DeleteBoilerSeriesPartsMapping(int id)
         {
-            var result = await _mediator.Send(new DeleteBoilerSeriesPartsMappingCommand(id));
-            return Ok(result);
+            
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteBoilerSeriesPartsMappingCommand(id));
+            return Ok(new { Message = message });
         }
 
-        [HttpPut]
+        [HttpPost("UpdateBoilerSeriesPartsMapping")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateBoilerSeriesPartsMapping(UpdateBoilerSeriesPartsMappingCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var id = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(command);
+            return Ok(new { Message = message });
         }
 
         
@@ -50,7 +60,7 @@ namespace YourApp.Application.WebAPI
             return Ok(items);
         }
 
-        [HttpGet("GetBoilerSeriesPartsMappingByIdQuery")]
+        [HttpGet("GetBoilerSeriesPartsMappingById")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> GetBoilerSeriesPartsMappingById([FromQuery] int id)
         {

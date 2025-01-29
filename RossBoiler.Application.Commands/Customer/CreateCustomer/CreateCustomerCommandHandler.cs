@@ -20,7 +20,10 @@ namespace RossBoiler.Application.Commands
             var customer = new Customer
             {
                 OrgName = request.OrgName,
-                Description = request.Description
+                Description = request.Description,
+                Addresses = new List<Address>(),
+                ContactCentres = new List<ContactCentre>(),  
+                CustomerBoilers = new List<CustomerBoiler>()
             };
 
             _context.Customers.Add(customer);

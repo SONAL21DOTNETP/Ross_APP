@@ -1,88 +1,66 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RossBoiler.Application.Commands;
-using RossBoiler.Application.Models;
 using RossBoiler.Application.Queries;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using RossBoiler.Application.WebAPI.Utils;
+using RossBoiler.Common;
 
-namespace RossBoiler.API.Controllers
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public CustomerController(IMediator mediator)
+        public CustomerController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
-        // Get All Customers
-        [HttpGet]
-        public async Task<ActionResult<List<Customer>>> GetAll()
-        {
-            var result = await _mediator.Send(new GetAllCustomersQuery());
-            return Ok(result);
-        }
-
-        // Get Customer by ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetById(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetCustomerByIdQuery(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        // Create a new Customer
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] CreateCustomerCommand command)
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand command)
         {
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = result }, result);
+            //Access  correlationId
+            var id = _correlationIdProvider.CorrelationId;
+            var customerId = await _mediator.Send(command);
+            return Ok(new { Id = customerId });
         }
-
-        // Update Customer
-        [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Update(int id, [FromBody] UpdateCustomerCommand command)
+        [HttpPost("UpdateCustomerCommand")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> UpdateCustomer([FromBody] UpdateCustomerCommand command)
         {
-            if (id != command.CustomerID)
-            {
-                return BadRequest("ID mismatch between route and body.");
-            }
-
-            try
-            {
-                var result = await _mediator.Send(command);
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            //Access  correlationId
+            var id = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(command);
+            return Ok(new { Message = message });
         }
-
-        // Delete Customer
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
+        [HttpDelete("DeleteCustomer")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> DeleteCustomer([FromQuery] int id)
         {
-            try
-            {
-                var result = await _mediator.Send(new DeleteCustomerCommand(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteCustomerCommand(id));
+            return Ok(new { Message = message });
+        }
+        [HttpGet]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> GetAllCustomers()
+        {
+            var Items = await _mediator.Send(new GetAllCustomersQuery());
+            return Ok(Items);
+        }
+        [HttpGet("GetCustomerById")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> GetCustomerById([FromQuery] int id)
+        {
+            var Item = await _mediator.Send(new GetCustomerByIdQuery(id));
+            return Ok(Item);
         }
     }
 }

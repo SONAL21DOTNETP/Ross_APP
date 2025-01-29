@@ -6,7 +6,7 @@ using RossBoiler.Application.Queries;
 using RossBoiler.Application.WebAPI.Utils;
 using RossBoiler.Common;
 
-namespace YourApp.Application.WebAPI
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
     [Route("api/v{version}/[controller]")]
@@ -22,9 +22,8 @@ namespace YourApp.Application.WebAPI
             _mediator = mediator;
             _correlationIdProvider = correlationIdProvider;
         }
-
         [HttpPost]
-        [MapToApiVersion("CreateContactCentre")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateContactCentre([FromBody] CreateContactCentreCommand command)
         {
             var id = _correlationIdProvider.CorrelationId;
@@ -51,14 +50,14 @@ namespace YourApp.Application.WebAPI
         }
 
         [HttpGet]
-        [MapToApiVersion("GetAllContactCentres")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllContactCentres()
         {
             var items = await _mediator.Send(new GetAllContactCentresQuery());
             return Ok(items);
         }
 
-        [HttpGet("GetContactCentreById")]
+        [HttpGet("GetContactCenterById")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> GetContactCentreById([FromQuery] int id)
         {

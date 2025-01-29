@@ -27,13 +27,14 @@ namespace RossBoiler.Application.Commands
             var hsn = new HSN
             {
                 HsnCode = request.HsnCode,
-                Description = request.Description
+                Description = request.Description,
+                Parts = new List<Parts>()
             };
 
             _context.HSNs.Add(hsn);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return hsn.HsnID;
+            return hsn.ID;
         }
     }
 }

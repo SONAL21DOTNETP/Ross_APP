@@ -6,34 +6,43 @@ using RossBoiler.Application.Queries;
 using RossBoiler.Application.WebAPI.Utils;
 using RossBoiler.Common;
 
-namespace YourApp.Application.WebAPI
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class CourierController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public CourierController(IMediator mediator)
+        public CourierController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
         [HttpPost]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateCourier(CreateCourierCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var id = _correlationIdProvider.CorrelationId;
+            var courierId = await _mediator.Send(command);
+            return Ok(new { Id = courierId });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteCourier")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> DeleteCourier(int id)
         {
-            var result = await _mediator.Send(new DeleteCourierCommand(id));
-            return Ok(result);
+            
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteCourierCommand(id));
+            return Ok(new { Message = message });
         }
 
-        [HttpPut]
+        [HttpPost("UpdateCourier")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateCourier(UpdateCourierCommand command)
         {
             var result = await _mediator.Send(command);
@@ -41,13 +50,15 @@ namespace YourApp.Application.WebAPI
         }
 
         [HttpGet]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllCouriers()
         {
             var result = await _mediator.Send(new GetAllCouriersQuery());
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetCourierById")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetCourierById(int id)
         {
             var result = await _mediator.Send(new GetCourierByIdQuery(id));

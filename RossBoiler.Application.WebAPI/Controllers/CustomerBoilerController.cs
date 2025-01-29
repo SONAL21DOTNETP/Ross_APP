@@ -24,7 +24,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
         [HttpPost]
-        [MapToApiVersion("CreateCustomerBoilerCommand")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateCustomerBoiler([FromBody] CreateCustomerBoilerCommand command)
         {
             var correlationId = _correlationIdProvider.CorrelationId;
@@ -51,7 +51,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
         [HttpGet]
-        [MapToApiVersion("GetAllCustomerBoilersQuery")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllCustomerBoilers()
         {
             var customerBoilers = await _mediator.Send(new GetAllCustomerBoilersQuery());

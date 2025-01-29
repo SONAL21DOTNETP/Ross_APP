@@ -8,12 +8,11 @@ using RossBoiler.Common;
 
 namespace RossBoiler.Application.WebAPI
 {
-    
-     [ApiController]
-     [Route("api/v{version}/[controller]")]
-     [ApiVersion("1.0")]
-     [Authorize]
-     public class AddressesController : ControllerBase{
+    [ApiController]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
+    public class AddressesController : ControllerBase{
         private readonly IMediator _mediator;
         private readonly ICorrelationIdProvider _correlationIdProvider;
 
@@ -24,7 +23,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
         [HttpPost]
-        [MapToApiVersion("CreateAddress")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateAddress([FromBody] CreateAddressCommand command)
         {
             var correlationId = _correlationIdProvider.CorrelationId;
@@ -51,7 +50,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
         [HttpGet]
-        [MapToApiVersion("GetAllAddresses")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllAddresses()
         {
             var addresses = await _mediator.Send(new GetAllAddressesQuery());

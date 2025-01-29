@@ -14,6 +14,6 @@ namespace RossBoiler.Application.Commands
          decimal SellingPrice,
          decimal? Weight,
          string? Dimensions,
-         int? PackingId,
+         int? Id,
          string? MaterialOfConstruction) : IRequest<int>;
 }

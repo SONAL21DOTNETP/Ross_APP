@@ -9,6 +9,7 @@ namespace RossBoiler.Application.Commands
     public class CreateCustomerBoilerCommandHandler : IRequestHandler<CreateCustomerBoilerCommand, int>
     {
         private readonly ApplicationDbContext _context;
+        private Customer customer;
 
         public CreateCustomerBoilerCommandHandler(ApplicationDbContext context)
         {
@@ -19,6 +20,7 @@ namespace RossBoiler.Application.Commands
         {
             var customerBoiler = new CustomerBoiler
             {
+                Customer = customer,
                 CustomerId = request.CustomerId,
                 BoilerHead = request.BoilerHead,
                 BoilerSeries = request.BoilerSeries

@@ -6,48 +6,61 @@ using RossBoiler.Application.Queries;
 using RossBoiler.Application.WebAPI.Utils;
 using RossBoiler.Common;
 
-namespace YourApp.Application.WebAPI
+namespace RossBoiler.Application.WebAPI
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class BoilerSeriesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        public BoilerSeriesController(IMediator mediator)
+        public BoilerSeriesController(IMediator mediator, ICorrelationIdProvider correlationIdProvider)
         {
             _mediator = mediator;
+            _correlationIdProvider = correlationIdProvider;
         }
-
         [HttpPost]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> CreateBoilerSeries(CreateBoilerSeriesCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var id = _correlationIdProvider.CorrelationId;
+            var BoilerSeriesId = await _mediator.Send(command);
+            return Ok(new { Id = BoilerSeriesId });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteBoilerSeries")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> DeleteBoilerSeries(int id)
         {
-            var result = await _mediator.Send(new DeleteBoilerSeriesCommand(id));
-            return Ok(result);
+            
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteBoilerSeriesCommand(id));
+            return Ok(new { Message = message });
         }
 
-        [HttpPut]
+        [HttpPost("UpdateBoilerSeries")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateBoilerSeries(UpdateBoilerSeriesCommand command)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            
+            var id = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(command);
+            return Ok(new { Message = message });
         }
 
         [HttpGet]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetAllBoilerSeries()
         {
             var result = await _mediator.Send(new GetAllBoilerSeriesQuery());
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetBoilerSeriesById")]
+        [MapToApiVersion("1")]
         public async Task<IActionResult> GetBoilerSeriesById(int id)
         {
             var result = await _mediator.Send(new GetBoilerSeriesByIdQuery(id));
