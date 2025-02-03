@@ -16,15 +16,15 @@ namespace RossBoiler.Application.Queries
 
         public async Task<SubCategory> Handle(GetSubCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var subCategory = await _context.SubCategories.FirstOrDefaultAsync(x => x.ID == request.ID, cancellationToken);
+            var item = await _context.SubCategories.FirstOrDefaultAsync(x => x.ID == request.ID, cancellationToken);
 
-            if (subCategory == null)
+            if (item == null)
             {
-                
-                return null;  
-            }
 
-            return subCategory;
+                throw new KeyNotFoundException($"SubCategory with ID {request.ID} not found");
+
+            }
+            return item;
         }
     }
 }

@@ -16,8 +16,15 @@ namespace RossBoiler.Application.Queries
 
         public async Task<BoilerSeriesPartsMapping> Handle(GetBoilerSeriesPartsMappingByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.BoilerSeriesPartsMappings
+            var item= await _context.BoilerSeriesPartsMappings
                 .FindAsync(new object[] { request.Id }, cancellationToken);
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"BoilerSeriesPartsMapping with ID {request.Id} not found");
+
+            }
+            return item;
         }
     }
 }

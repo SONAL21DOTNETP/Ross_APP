@@ -25,7 +25,9 @@ namespace RossBoiler.Application.Commands
             {
                 Name = request.Name,
                 Code = request.Code,
-                Description = request.Description
+                Description = request.Description,
+                Parts = new List<Parts>()
+
             };
 
             _context.Units.Add(unit);

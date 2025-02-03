@@ -3,15 +3,15 @@ using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RossBoiler.Application.Commands
 {
-    public class DeleteHSNCommandHandler : IRequestHandler<DeleteHSNCommand, int>
+    public class DeleteHSNCommandHandler : IRequestHandler<DeleteHSNCommand, string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
-
-        // Removed the ILogger field and the logger parameter from the constructor
 
         public DeleteHSNCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
@@ -19,9 +19,9 @@ namespace RossBoiler.Application.Commands
             _correlationIdProvider = correlationIdProvider;
         }
 
-        public async Task<int> Handle(DeleteHSNCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteHSNCommand request, CancellationToken cancellationToken)
         {
-            // Access correlationId
+           
             var correlationId = _correlationIdProvider.CorrelationId;
 
             var hsn = await _context.HSNs.FindAsync(new object[] { request.HsnID }, cancellationToken);
@@ -32,7 +32,7 @@ namespace RossBoiler.Application.Commands
             _context.HSNs.Remove(hsn);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.HsnID;
+            return $"HSN with ID {request.HsnID} deleted successfully.";
         }
     }
 }

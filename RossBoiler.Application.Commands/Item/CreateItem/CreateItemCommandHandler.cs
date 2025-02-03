@@ -2,6 +2,7 @@
 using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
+using System.Text.RegularExpressions;
 
 namespace RossBoiler.Application.Commands
 {
@@ -16,9 +17,14 @@ namespace RossBoiler.Application.Commands
         }
         public async Task<int> Handle(CreateItemCommand request, CancellationToken cancellationToken)
         {
-            //Access  correlationId
+          
             var id = _correlationIdProvider.CorrelationId;
-            //please write code to add this into log
+
+            if (!Regex.IsMatch(request.Price.ToString(), RegexConstants.PriceRegex))
+            {
+                throw new ArgumentException("Invalid Price format. The price must be a valid number with at most two decimal places.");
+            }
+
             var product = new Item
             {
                 Name = request.Name,

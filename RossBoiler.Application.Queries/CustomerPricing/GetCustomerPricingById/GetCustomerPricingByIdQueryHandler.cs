@@ -16,7 +16,14 @@ namespace RossBoiler.Application.Queries
 
         public async Task<CustomerPricing> Handle(GetCustomerPricingByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.CustomerPricings.FirstOrDefaultAsync(c => c.ID == request.Id, cancellationToken);
+            var item= await _context.CustomerPricings.FirstOrDefaultAsync(c => c.ID == request.Id, cancellationToken);
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"CustomerPricing with ID {request.Id} not found");
+
+            }
+            return item;
         }
     }
 }

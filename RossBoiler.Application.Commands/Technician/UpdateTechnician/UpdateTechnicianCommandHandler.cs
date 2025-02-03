@@ -4,7 +4,7 @@ using RossBoiler.Application.Models;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateTechnicianCommandHandler : IRequestHandler<UpdateTechnicianCommand, int>
+    public class UpdateTechnicianCommandHandler : IRequestHandler<UpdateTechnicianCommand, string>
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,7 +13,7 @@ namespace RossBoiler.Application.Commands
             _context = context;
         }
 
-        public async Task<int> Handle(UpdateTechnicianCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateTechnicianCommand request, CancellationToken cancellationToken)
         {
             var technician = await _context.Technicians.FindAsync(new object[] { request.TechnicianID }, cancellationToken);
 
@@ -36,7 +36,7 @@ namespace RossBoiler.Application.Commands
             _context.Technicians.Update(technician);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return technician.Id;
+            return $"technician with ID {request.TechnicianID} updated successfully.";
         }
     }
 }

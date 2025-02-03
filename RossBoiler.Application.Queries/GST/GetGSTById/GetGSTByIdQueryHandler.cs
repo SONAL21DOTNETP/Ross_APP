@@ -16,7 +16,14 @@ namespace RossBoiler.Application.Queries
 
         public async Task<GST> Handle(GetGSTByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.GSTs.FirstOrDefaultAsync(g => g.ID == request.Id, cancellationToken);
+            var item= await _context.GSTs.FirstOrDefaultAsync(g => g.ID == request.Id, cancellationToken);
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"GST with ID {request.Id} not found");
+
+            }
+            return item;
         }
     }
 }

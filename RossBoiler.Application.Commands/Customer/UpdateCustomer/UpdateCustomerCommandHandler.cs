@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, int>
+    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, string>
     {
         private readonly ApplicationDbContext _context;
 
@@ -15,7 +15,7 @@ namespace RossBoiler.Application.Commands
             _context = context;
         }
 
-        public async Task<int> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = await _context.Customers.FindAsync(new object[] { request.CustomerID }, cancellationToken);
 
@@ -30,7 +30,8 @@ namespace RossBoiler.Application.Commands
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return customer.Id;
+            
+            return $"Customer with ID {customer.Id} Update successfully.";
         }
     }
 }

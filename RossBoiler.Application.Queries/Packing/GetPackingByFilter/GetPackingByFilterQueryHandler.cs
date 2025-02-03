@@ -16,9 +16,16 @@ namespace RossBoiler.Application.Queries
         public async Task<Packing> Handle(GetPackingByFilterQuery request, CancellationToken cancellationToken)
         {
 
-            return await _context.Packings
+            var item= await _context.Packings
                 .FindAsync(new object[] { request.PackingID }, cancellationToken);
-            
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"Packing with ID {request.PackingID} not found");
+
+            }
+            return item;
+
         }
     }
 }

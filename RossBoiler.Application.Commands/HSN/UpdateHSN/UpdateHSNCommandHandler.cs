@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateHSNCommandHandler : IRequestHandler<UpdateHSNCommand, int>
+    public class UpdateHSNCommandHandler : IRequestHandler<UpdateHSNCommand, string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
 
-        // Removed the ILogger field and the logger parameter from the constructor
+        
 
         public UpdateHSNCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
@@ -20,9 +20,9 @@ namespace RossBoiler.Application.Commands
         }
 
 
-        public async Task<int> Handle(UpdateHSNCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateHSNCommand request, CancellationToken cancellationToken)
         {
-            //Access  correlationId
+            
             var id = _correlationIdProvider.CorrelationId;
 
             var hsn = await _context.HSNs.FindAsync(new object[] { request.HsnID }, cancellationToken);
@@ -36,7 +36,8 @@ namespace RossBoiler.Application.Commands
             _context.HSNs.Update(hsn);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.HsnID;
+            
+            return $"HSN with ID {request.HsnID} Update successfully.";
         }
     }
 }

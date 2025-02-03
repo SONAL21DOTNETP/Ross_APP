@@ -4,7 +4,7 @@ using RossBoiler.Application.Models;
 
 namespace RossBoiler.Application.Commands
 {
-    public class DeleteUserManagementCommandHandler : IRequestHandler<DeleteUserManagementCommand, int>
+    public class DeleteUserManagementCommandHandler : IRequestHandler<DeleteUserManagementCommand, string>
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,7 +13,7 @@ namespace RossBoiler.Application.Commands
             _context = context;
         }
 
-        public async Task<int> Handle(DeleteUserManagementCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteUserManagementCommand request, CancellationToken cancellationToken)
         {
             var userManagement = await _context.UserManagements.FindAsync(new object[] { request.UserManagementID }, cancellationToken);
 
@@ -23,7 +23,8 @@ namespace RossBoiler.Application.Commands
             _context.UserManagements.Remove(userManagement);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.UserManagementID;
+        
+            return $"UserManagement with ID {request.UserManagementID} delete successfully.";
         }
     }
 }

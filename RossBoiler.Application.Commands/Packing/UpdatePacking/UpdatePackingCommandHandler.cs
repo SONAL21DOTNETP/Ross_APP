@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdatePackingCommandHandler : IRequestHandler<UpdatePackingCommand,int>
+    public class UpdatePackingCommandHandler : IRequestHandler<UpdatePackingCommand,string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
@@ -16,9 +16,9 @@ namespace RossBoiler.Application.Commands
             _correlationIdProvider = correlationIdProvider;
         }
 
-        public async Task<int> Handle(UpdatePackingCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdatePackingCommand request, CancellationToken cancellationToken)
         {
-            //Access  correlationId
+            
             var id = _correlationIdProvider.CorrelationId;
 
             var packing = await _context.Packings.FindAsync(new object[] { request.PackingID }, cancellationToken);
@@ -33,7 +33,8 @@ namespace RossBoiler.Application.Commands
             _context.Packings.Update(packing);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.PackingID;
+           
+            return $"Packing with ID {request.PackingID} updated successfully.";
         }
     }
 }

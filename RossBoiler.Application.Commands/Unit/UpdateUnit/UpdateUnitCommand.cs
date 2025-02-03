@@ -3,5 +3,5 @@ using MediatR;
 
 namespace RossBoiler.Application.Commands
 {
-    public record UpdateUnitCommand(int UnitID, string Code, string Name, string Description) : IRequest<int>;
+    public record UpdateUnitCommand(int UnitID, string Code, string Name, string Description) : IRequest<string>;
 }

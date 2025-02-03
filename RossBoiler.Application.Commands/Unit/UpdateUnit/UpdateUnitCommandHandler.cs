@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateUnitCommandHandler : IRequestHandler<UpdateUnitCommand, int>
+    public class UpdateUnitCommandHandler : IRequestHandler<UpdateUnitCommand, string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
@@ -16,7 +16,7 @@ namespace RossBoiler.Application.Commands
             _correlationIdProvider = correlationIdProvider;
         }
 
-        public async Task<int> Handle(UpdateUnitCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateUnitCommand request, CancellationToken cancellationToken)
         {
             // Access correlationId
             var id = _correlationIdProvider.CorrelationId;
@@ -33,7 +33,8 @@ namespace RossBoiler.Application.Commands
             _context.Units.Update(unit);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.UnitID;
+           
+            return $"Unit with ID {request.UnitID} updated successfully.";
         }
     }
 }

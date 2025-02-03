@@ -33,13 +33,23 @@ namespace RossBoiler.Application.WebAPI
         }
 
 
-        [HttpPost("UpdateProduct")]
+        [HttpPost("UpdateItems")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateItemByIdCommand command)
         {
             //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
             var message = await _mediator.Send(command);
+            return Ok(new { Message = message });
+        }
+
+
+        [HttpDelete("DeleteItems")]
+        [MapToApiVersion("1")]
+        public async Task<IActionResult> DeleteItems([FromQuery] int id)
+        {
+            var correlationId = _correlationIdProvider.CorrelationId;
+            var message = await _mediator.Send(new DeleteItemCommand(id));
             return Ok(new { Message = message });
         }
 

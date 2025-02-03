@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
+using System.Text.RegularExpressions;
 
 namespace RossBoiler.Application.Commands
 {
@@ -18,11 +20,33 @@ namespace RossBoiler.Application.Commands
         {
             
             var id = _correlationIdProvider.CorrelationId;
-            
+
+            //  Validate input fields
+            if (string.IsNullOrWhiteSpace(request.Name) ||
+                !Regex.IsMatch(request.Name, RegexConstants.AlphabeticRegex))
+            {
+                throw new ArgumentException("Invalid Category Name.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Description) ||
+                !Regex.IsMatch(request.Description, RegexConstants.AlphanumericRegex))
+            {
+                throw new ArgumentException("Invalid Description.");
+            }
+
+            //  Check if Category already exists
+            var existingCategory = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name == request.Name, cancellationToken);
+            if (existingCategory != null)
+            {
+                throw new ArgumentException("Category already exists.");
+            }
+
             var  category = new Category
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                SubCategories = new List<SubCategory>()
             };
 
             

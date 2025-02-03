@@ -16,9 +16,17 @@ namespace RossBoiler.Application.Queries
 
         public async Task<HSN> Handle(GetHSNByFilterQuery request, CancellationToken cancellationToken)
         {
-            return await _context.HSNs
+            var item= await _context.HSNs
                 .FindAsync(new object[] { request.HsnID }, cancellationToken);
-           
+
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"HSN with ID {request.HsnID} not found");
+
+            }
+            return item;
+
         }
 
 

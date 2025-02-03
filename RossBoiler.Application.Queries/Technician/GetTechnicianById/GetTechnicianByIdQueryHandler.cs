@@ -16,7 +16,14 @@ namespace RossBoiler.Application.Queries
 
         public async Task<Technician> Handle(GetTechnicianByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Technicians.FindAsync(new object[] { request.Id }, cancellationToken);
+            var item= await _context.Technicians.FindAsync(new object[] { request.Id }, cancellationToken);
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"Technician with ID {request.Id} not found");
+
+            }
+            return item;
         }
     }
 }

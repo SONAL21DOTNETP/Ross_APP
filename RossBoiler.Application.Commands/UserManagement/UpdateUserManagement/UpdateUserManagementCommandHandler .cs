@@ -4,7 +4,7 @@ using RossBoiler.Application.Models;
 
 namespace RossBoiler.Application.Commands
 {
-    public class UpdateUserManagementCommandHandler : IRequestHandler<UpdateUserManagementCommand, int>
+    public class UpdateUserManagementCommandHandler : IRequestHandler<UpdateUserManagementCommand, string>
     {
         private readonly ApplicationDbContext _context;
 
@@ -13,7 +13,7 @@ namespace RossBoiler.Application.Commands
             _context = context;
         }
 
-        public async Task<int> Handle(UpdateUserManagementCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateUserManagementCommand request, CancellationToken cancellationToken)
         {
             var userManagement = await _context.UserManagements.FindAsync(new object[] { request.UserManagementID }, cancellationToken);
 
@@ -26,7 +26,8 @@ namespace RossBoiler.Application.Commands
             _context.UserManagements.Update(userManagement);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return userManagement.Id;
+            
+            return $"UserManagement with ID {userManagement.Id} update successfully.";
         }
     }
 }

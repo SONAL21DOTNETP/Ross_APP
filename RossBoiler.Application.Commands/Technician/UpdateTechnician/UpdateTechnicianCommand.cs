@@ -17,5 +17,5 @@ namespace RossBoiler.Application.Commands
 		string Pan,
 		string ResidentialAddress,
 		string PersonalPhoneNumber
-	) : IRequest<int>;
+	) : IRequest<string>;
 }

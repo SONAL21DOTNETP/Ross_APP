@@ -3,6 +3,7 @@ using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 namespace RossBoiler.Application.Commands
 {
     public class CreateBoilerSeriesPartsMappingCommandHandler : IRequestHandler<CreateBoilerSeriesPartsMappingCommand, int>
@@ -19,7 +20,31 @@ namespace RossBoiler.Application.Commands
         public async Task<int> Handle(CreateBoilerSeriesPartsMappingCommand request, CancellationToken cancellationToken)
         {
             var correlationId = _correlationIdProvider.CorrelationId;
-            // Log the correlationId here
+            //  Validate input fields
+            if (string.IsNullOrWhiteSpace(request.Head) ||
+                !Regex.IsMatch(request.Head, RegexConstants.AlphabeticRegex))
+            {
+                throw new ArgumentException("Invalid Head.");
+            }
+
+            if (request.SeriesId <= 0)
+            {
+                throw new ArgumentException("Invalid Series ID.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Description) ||
+                !Regex.IsMatch(request.Description, RegexConstants.AlphanumericRegex))
+            {
+                throw new ArgumentException("Invalid Description.");
+            }
+
+            //  Check if SeriesId exists
+            var existingSeries = await _context.BoilerSeries
+                .FirstOrDefaultAsync(bs => bs.Id == request.SeriesId, cancellationToken);
+            if (existingSeries == null)
+            {
+                throw new ArgumentException("Invalid Series ID. Boiler series does not exist.");
+            }
 
             var boilerSeriesPartsMapping = new BoilerSeriesPartsMapping
             {

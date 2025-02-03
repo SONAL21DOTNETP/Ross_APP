@@ -3,54 +3,43 @@ using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace RossBoiler.Application.Commands
 {
-    //public class CreatePartsCommandHandler : IRequestHandler<CreatePartsCommand, int>
-    //{
-    //    private readonly ApplicationDbContext _context;
-
-    //    public CreatePartsCommandHandler(ApplicationDbContext context)
-    //    {
-    //        _context = context;
-    //    }
-
-    //    public async Task<int> Handle(CreatePartsCommand request, CancellationToken cancellationToken)
-    //    {
-    //        var part = new Parts
-    //        {
-    //            PartNumber = request.PartNumber,
-    //            Name = request.Name,
-    //            Description = request.Description,
-
-    //            UnitId = request.UnitId,
-    //            GSTId = request.GSTId,
-    //            HSNDetailsId = request.HSNDetailsId,
-    //            SupplyType = request.SupplyType,
-    //            SellingPrice = request.SellingPrice,
-    //            Weight = request.Weight,
-    //            Dimensions = request.Dimensions,
-    //            PackingId = (int)request.Id,
-    //            MaterialOfConstruction = request.MaterialOfConstruction
-    //        };
-
-    //        _context.Parts.Add(part);
-    //        await _context.SaveChangesAsync(cancellationToken);
-
-    //        return part.Id;
-    //    }
-    //}
+    
     public class CreatePartsCommandHandler : IRequestHandler<CreatePartsCommand, int>
     {
         private readonly ApplicationDbContext _context;
-
-        public CreatePartsCommandHandler(ApplicationDbContext context)
+        private readonly ICorrelationIdProvider _correlationIdProvider;
+        public CreatePartsCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
             _context = context;
+            _correlationIdProvider = correlationIdProvider;
         }
 
         public async Task<int> Handle(CreatePartsCommand request, CancellationToken cancellationToken)
         {
+
+            // Validate input fields using regex constants
+            if (!Regex.IsMatch(request.Name, RegexConstants.AlphanumericRegex))
+                throw new Exception("Invalid Name.");
+
+            if (!Regex.IsMatch(request.SellingPrice.ToString(), RegexConstants.PriceRegex))
+                throw new Exception("Invalid Selling Price.");
+
+            if (!request.Weight.HasValue ||
+                !Regex.IsMatch(request.Weight.Value.ToString(), RegexConstants.PriceRegex))
+            {
+                throw new ArgumentException("Invalid Weight.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Dimensions) ||
+                !Regex.IsMatch(request.Dimensions, RegexConstants.DimensionsRegex))
+            {
+                throw new ArgumentException("Invalid Dimensions.");
+            }
+
             // Fetch existing related entities from the database
             var unit = await _context.Units.FirstOrDefaultAsync(u => u.ID == request.UnitId, cancellationToken);
             var gst = await _context.GSTs.FirstOrDefaultAsync(g => g.ID == request.GSTId, cancellationToken);

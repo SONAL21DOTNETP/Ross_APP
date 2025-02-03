@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class DeleteUnitCommandHandler : IRequestHandler<DeleteUnitCommand,int>
+    public class DeleteUnitCommandHandler : IRequestHandler<DeleteUnitCommand,string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
@@ -16,7 +16,7 @@ namespace RossBoiler.Application.Commands
             _correlationIdProvider = correlationIdProvider;
         }
 
-        public async Task<int> Handle(DeleteUnitCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteUnitCommand request, CancellationToken cancellationToken)
         {
             //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
@@ -29,7 +29,8 @@ namespace RossBoiler.Application.Commands
             _context.Units.Remove(unit);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.UnitID;
+         
+            return $"Unit with ID {request.UnitID} delete successfully.";
         }
     }
 }

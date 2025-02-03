@@ -16,7 +16,14 @@ namespace RossBoiler.Application.Queries
 
         public async Task<ContactCentre> Handle(GetContactCentreByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.ContactCentres.FindAsync(new object[] { request.Id }, cancellationToken);
+            var item= await _context.ContactCentres.FindAsync(new object[] { request.Id }, cancellationToken);
+            if (item == null)
+            {
+
+                throw new KeyNotFoundException($"ContactCentre with ID {request.Id} not found");
+
+            }
+            return item;
         }
     }
 }

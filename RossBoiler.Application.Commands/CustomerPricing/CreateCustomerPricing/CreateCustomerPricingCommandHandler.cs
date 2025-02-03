@@ -2,6 +2,7 @@ using MediatR;
 using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
+using System.Text.RegularExpressions;
 
 namespace RossBoiler.Application.Commands
 {
@@ -19,6 +20,12 @@ namespace RossBoiler.Application.Commands
         public async Task<int> Handle(CreateCustomerPricingCommand request, CancellationToken cancellationToken)
         {
             var correlationId = _correlationIdProvider.CorrelationId;
+
+            // Validate Percentage with regex
+            if (!Regex.IsMatch(request.Percentage.ToString(), RegexConstants.PercentageRegex))
+            {
+                throw new ArgumentException("Invalid Percentage format. It should be between 0 and 100 with optional decimals.");
+            }
 
             var customerPricing = new CustomerPricing
             {

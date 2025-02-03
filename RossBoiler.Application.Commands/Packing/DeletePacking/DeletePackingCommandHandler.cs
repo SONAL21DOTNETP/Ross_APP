@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
-    public class DeletePackingCommandHandler : IRequestHandler<DeletePackingCommand,int>
+    public class DeletePackingCommandHandler : IRequestHandler<DeletePackingCommand,string>
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
@@ -16,7 +16,7 @@ namespace RossBoiler.Application.Commands
             _correlationIdProvider = correlationIdProvider;
         }
 
-        public async Task<int> Handle(DeletePackingCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeletePackingCommand request, CancellationToken cancellationToken)
         {
             //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
@@ -29,7 +29,8 @@ namespace RossBoiler.Application.Commands
             _context.Packings.Remove(packing);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return request.PackingID;
+           
+            return $"Packing with ID {request.PackingID} delete successfully.";
         }
     }
 }

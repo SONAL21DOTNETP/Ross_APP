@@ -3,5 +3,5 @@ using MediatR;
 
 namespace RossBoiler.Application.Commands
 {
-    public record DeletePackingCommand(int PackingID) : IRequest<string>;
+    public record DeleteItemCommand(int ID) : IRequest<string>;
 }

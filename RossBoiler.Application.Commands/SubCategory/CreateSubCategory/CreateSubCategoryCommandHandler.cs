@@ -2,6 +2,7 @@
 using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace RossBoiler.Application.Commands
 {
@@ -9,25 +10,32 @@ namespace RossBoiler.Application.Commands
     {
         private readonly ApplicationDbContext _context;
         private readonly ICorrelationIdProvider _correlationIdProvider;
+
         public CreateSubCategoryCommandHandler(ApplicationDbContext context, ICorrelationIdProvider correlationIdProvider)
         {
             _context = context;
             _correlationIdProvider = correlationIdProvider;
         }
+
         public async Task<int> Handle(CreateSubCategoryCommand request, CancellationToken cancellationToken)
         {
-            //Access  correlationId
             var id = _correlationIdProvider.CorrelationId;
-            //please write code to add this into log
-            // Create the Item entity
-         
 
-            // Create the SubCategory entity
+            // Fetch the Category from the database
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.ID == request.CategoryID, cancellationToken);
+
+            if (category == null)
+            {
+                throw new ArgumentException("Category not found.");
+            }
+
             var subCategory = new SubCategory
             {
                 Name = request.Name,
                 Description = request.Description,
-                CategoryId = request.CategoryID 
+                CategoryId = request.CategoryID,
+                Category = category // Assign the fetched category
             };
 
             // Add and save the entity
@@ -37,5 +45,4 @@ namespace RossBoiler.Application.Commands
             return subCategory.ID;
         }
     }
-
 }

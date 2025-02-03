@@ -18,22 +18,21 @@ namespace RossBoiler.Application.Commands
         }
         public async Task<string> Handle(UpdateSubCategoryByIdCommand request, CancellationToken cancellationToken)
         {
-            ////Access  correlationId
-            var id = _correlationIdProvider.CorrelationId;
             
-            // Find the item by ID
+            var id = _correlationIdProvider.CorrelationId;
+       
             var item = await _context.SubCategories.FirstOrDefaultAsync(i => i.ID == request.ID, cancellationToken);
-            //if null 
+          
             if (item == null)
             {
                 return $"category with ID {request.ID} not found.";
             }
-            // Update the item
+        
             item.Name = request.Name;
             item.CategoryId = request.CategoryID;
             item.Description = request.Description;
 
-            // Save changes
+          
             await _context.SaveChangesAsync(cancellationToken);
 
             return $"category with ID {request.ID} updated successfully.";

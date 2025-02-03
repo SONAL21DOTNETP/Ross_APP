@@ -6,5 +6,5 @@ namespace RossBoiler.Application.Commands
         int UserManagementID,
         string Role,
         bool IsAdmin
-    ) : IRequest<int>;
+    ) : IRequest<string>;
 }

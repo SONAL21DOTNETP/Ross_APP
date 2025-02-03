@@ -3,6 +3,7 @@ using RossBoiler.Application.Data;
 using RossBoiler.Application.Models;
 using RossBoiler.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace RossBoiler.Application.Commands
 {
@@ -20,7 +21,28 @@ namespace RossBoiler.Application.Commands
         public async Task<int> Handle(CreateBoilerCommand request, CancellationToken cancellationToken)
         {
             var correlationId = _correlationIdProvider.CorrelationId;
-            // Log the correlationId here
+            
+
+            // Validate input fields
+            if (string.IsNullOrWhiteSpace(request.Head) ||
+                !Regex.IsMatch(request.Head, RegexConstants.AlphanumericRegex))
+            {
+                throw new ArgumentException("Invalid Boiler Head.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Description) ||
+                !Regex.IsMatch(request.Description, RegexConstants.AlphanumericRegex))
+            {
+                throw new ArgumentException("Invalid Boiler Description.");
+            }
+
+            // check if the Boiler with the same Head already exists
+            var existingBoiler = await _context.Boilers
+                .FirstOrDefaultAsync(b => b.Head == request.Head, cancellationToken);
+            if (existingBoiler != null)
+            {
+                throw new ArgumentException("Boiler with this Head already exists.");
+            }
 
             var boiler = new Boiler
             {
