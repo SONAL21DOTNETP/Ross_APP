@@ -121,7 +121,7 @@ builder.Services.AddCors(options =>
     // Policy for allowing specific IPs
     options.AddPolicy("AllowSpecific", policy =>
     {
-        policy.WithOrigins("http://192.168.1.2", "http://192.168.1.101") // Replace with your specific IPs
+        policy.WithOrigins("*") // Replace with your specific IPs
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -160,7 +160,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseCors();
+app.UseCors("AllowSpecific");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
