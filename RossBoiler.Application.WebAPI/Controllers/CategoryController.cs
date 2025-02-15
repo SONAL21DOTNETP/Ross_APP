@@ -33,7 +33,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
 
-        [HttpPost("UpdateCategory")]
+        [HttpPut("UpdateCategory")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryByIdCommand command)
         {

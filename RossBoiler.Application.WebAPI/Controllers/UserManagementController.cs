@@ -33,7 +33,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
 
-        [HttpPost("UpdateUserManagement")]
+        [HttpPut("UpdateUserManagement")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateUserManagement([FromBody] UpdateUserManagementCommand command)
         {

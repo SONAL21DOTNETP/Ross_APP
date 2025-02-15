@@ -41,7 +41,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Message = message });
         }
 
-        [HttpPost("UpdateBoilerSeriesPartsMapping")]
+        [HttpPut("UpdateBoilerSeriesPartsMapping")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateBoilerSeriesPartsMapping(UpdateBoilerSeriesPartsMappingCommand command)
         {

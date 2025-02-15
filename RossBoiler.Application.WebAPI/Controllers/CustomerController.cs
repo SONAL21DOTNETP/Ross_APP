@@ -31,7 +31,7 @@ namespace RossBoiler.Application.WebAPI
             var customerId = await _mediator.Send(command);
             return Ok(new { Id = customerId });
         }
-        [HttpPost("UpdateCustomerCommand")]
+        [HttpPut("UpdateCustomerCommand")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateCustomer([FromBody] UpdateCustomerCommand command)
         {

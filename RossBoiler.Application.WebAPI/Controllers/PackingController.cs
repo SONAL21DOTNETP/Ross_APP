@@ -32,7 +32,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Id = packingId });
         }
 
-        [HttpPost("UpdatePacking")]
+        [HttpPut("UpdatePacking")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdatePacking([FromBody] UpdatePackingCommand command)
         {

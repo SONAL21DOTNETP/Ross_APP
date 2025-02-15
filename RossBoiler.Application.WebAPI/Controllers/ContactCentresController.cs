@@ -31,7 +31,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Id = contactCentreId });
         }
 
-        [HttpPost("UpdateContactCentre")]
+        [HttpPut("UpdateContactCentre")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateContactCentre([FromBody] UpdateContactCentreCommand command)
         {

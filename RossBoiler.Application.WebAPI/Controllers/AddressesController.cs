@@ -31,7 +31,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Id = addressId });
         }
 
-        [HttpPost("UpdateAddress")]
+        [HttpPut("UpdateAddress")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateAddress([FromBody] UpdateAddressCommand command)
         {

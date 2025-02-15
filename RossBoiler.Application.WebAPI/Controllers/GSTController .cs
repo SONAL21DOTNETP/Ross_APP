@@ -32,7 +32,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Id = gstId });
         }
 
-        [HttpPost("UpdateGST")]
+        [HttpPut("UpdateGST")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateGST([FromBody] UpdateGSTByIdCommand command)
         {

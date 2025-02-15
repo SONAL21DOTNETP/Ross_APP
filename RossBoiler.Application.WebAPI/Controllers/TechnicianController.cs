@@ -33,7 +33,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
 
-        [HttpPost("UpdateTechnician")]
+        [HttpPut("UpdateTechnician")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateTechnician([FromBody] UpdateTechnicianCommand command)
         {

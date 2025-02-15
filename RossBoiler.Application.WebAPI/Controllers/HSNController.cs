@@ -32,7 +32,7 @@ namespace RossBoiler.Application.WebAPI
             return Ok(new { Id = hsnId });
         }
 
-        [HttpPost("UpdateHSN")]
+        [HttpPut("UpdateHSN")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateHSN([FromBody] UpdateHSNCommand command)
         {

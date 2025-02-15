@@ -33,7 +33,7 @@ namespace RossBoiler.Application.WebAPI
         }
 
 
-        [HttpPost("UpdateItems")]
+        [HttpPut("UpdateItems")]
         [MapToApiVersion("1")]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateItemByIdCommand command)
         {
